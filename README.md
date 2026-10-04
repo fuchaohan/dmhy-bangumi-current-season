@@ -1,5 +1,6 @@
-# dmhy-bangumi-current-season · 动漫花园新番索引更新脚本（自托管复刻）
+# 动漫花园新番索引更新脚本（自托管复刻版）
 
+> 文件名沿用原版 `dmhy-bangumi-current-season.user.js`（便于与原版对照），脚本显示名为中文。
 > 复刻自 [Masaiki/dmhy-bangumi-current-season](https://github.com/Masaiki/dmhy-bangumi-current-season)（Greasy Fork [脚本 403045](https://greasyfork.org/zh-CN/scripts/403045-dmhy-bangumi-current-season)，作者 **Masaiki / 菜姬**，数据由 MIR 维护）。
 > 本仓库为独立自托管副本：脚本与全部季度数据存于本仓库，通过 jsDelivr CDN 分发，不依赖原仓库的阿里云 OSS 镜像。
 
@@ -13,7 +14,7 @@
    （如 `cdn.jsdelivr.net` 不可用，可换镜像：`https://fastly.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/dmhy-bangumi-current-season.user.js`）
 3. 打开 [share.dmhy.org](https://share.dmhy.org/)（动漫花园），首页新番时间表会自动刷新为最新季度索引。
 
-> 本复刻版与 Greasy Fork 原版 `@name` 相同、`@namespace` 不同，两者可共存；若已装原版建议先禁用其一。
+> 本复刻版 `@name` 为「动漫花园新番索引更新脚本（自托管复刻版）」、`@namespace` 为本仓库地址，与 Greasy Fork 原版（`@name` 为 `dmhy-bangumi-current-season`）标识不同，两者可共存；若已装原版建议先禁用其一以免时间表被重复改写。
 
 ## 功能
 

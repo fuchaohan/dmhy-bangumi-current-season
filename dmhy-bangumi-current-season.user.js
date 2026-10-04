@@ -1,8 +1,7 @@
 // ==UserScript==
-// @name         dmhy-bangumi-current-season
-// @name:zh-CN   动漫花园新番索引更新脚本（自托管复刻版）
+// @name         动漫花园新番索引更新脚本（自托管复刻版）
 // @namespace    https://github.com/fuchaohan/dmhy-bangumi-current-season
-// @version      0.4.3
+// @version      0.5.0
 // @description  update data of new season bangumi on dmhy (self-hosted replica)
 // @description:zh-CN 更新动漫花园新番列表及搜索关键词（数据改由 jsDelivr 从本仓库分发）
 // @author       Masaiki (original), fuchaohan (replica)
