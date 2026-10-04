@@ -21,7 +21,7 @@
 - 用本仓库维护的当季新番数据，替换动漫花园首页的新番时间表，并为每部番剧挂上站内搜索链接。
 - 页面右上角提供：
   - **顯示切換**：全部一周时间表 / 只显示今明后三天 + 非週更番剧；
-  - **季度下拉框**：切换历史季度数据（2020年04月 ~ 2026年10月），只列季度、不列镜像源。
+  - **季度下拉框**：切换历史季度数据（2020年04月 ~ 2026年10月，共 27 项），只列季度、不列镜像源。
 - 顺带修复页面居中显示问题。
 - 条目支持**生效/失效日期**：未开播的番剧到首播日自动出现，已完结的自动隐藏，无需再手动改数据。
 
@@ -54,9 +54,22 @@
 | --- | --- |
 | `bangumi-data.js` | 当季新番数据（默认数据源） |
 | `history-list.js` | 历史季度数据源索引 |
-| `history-data/*.js` | 202004~202301 各季度历史数据 |
+| `history-data/*.js` | 202004~202607 共 26 个季度的历史数据 |
 
 数据格式：`bangumi_group_name` 为周内分组（週日~週六 + 非週更）；`bangumi_data` 每项为 `[[名称, 搜索关键词, 生效开始日, 失效结束日], ...]`，关键词与日期可省略。
+
+## 历史季度数据
+
+共 **26 个季度**（2020年04月 ~ 2026年07月）+ 当季，下拉框按时间倒序排列。
+
+- 2020年04月 ~ 2023年01月：沿用原版（MIR 维护）的数据。
+- 2023年04月 ~ 2026年07月：本仓库自建，番名与出品信息取自 [Fansub Nexus 整理表](https://docs.google.com/spreadsheets/d/1s1fXYs2Ne2srbiQPhlB1GUi9Nsree3JZhSHuKjlpxEs)（共 **898 部**），播出星期来源分三档：
+  1. 9 个季度的表格「首播时间」列形如 `10月3日周六`，直接取星期；
+  2. 5 个季度（202307/202310/202401/202404/202407）该列被挪作他用，改用 [yuc.wiki 同季度排期表](http://yuc.wiki/202307) 与 [巴哈姆特動畫瘋同月节目表](https://forum.gamer.com.tw/C.php?bsn=60037) 交叉匹配；
+  3. 两者均无法确定的，按权威周几分组表（萌娘百科「模板:日本XXXX年季动画」、bilibili 每日放送时间汇总等）逐条人工核定，见 `build/manual-weekday.py`。
+- **历史季度一律不写日期字段**。这些季度早已完结，加生效/失效日反而会在切到该季度时被脚本的日期过滤整季误伤。
+- 剧场版、特别篇、记念动画、短篇 ONA 归入「非週更」。
+- 复现步骤见 `build/`：`fetch-seasons.py`（导出 Sheet）→ `parse-yuc.py` / `parse-bahamo2.py`（解析排期表）→ `gen-history.py`（归组并生成）。
 
 ### 多源热备（自动，用户无需手动切换）
 
@@ -81,16 +94,25 @@
 
 ### 换季度时的推荐做法
 
-1. 打开 Fansub Nexus 当季表，按「首播时间」列取星期；留空的用 yuc.wiki 排期表补。
+1. 打开 Fansub Nexus 当季表，按「首播时间」列取星期；留空的用 yuc.wiki / 巴哈姆特节目表补。
 2. `bangumi_data` 每项写成 `[显示名, 搜索关键词]`，未来开播的追加生效日 `'YYYY-MM-DD'`，已完结的追加失效日。
 3. 旧当季数据存为 `history-data/YYYYMM.js`，并在 `history-list.js` 的 `values`/`names`/`urls` 三个数组**同一下标位**追加一项。
 4. 用 `node --check bangumi-data.js` 过语法，并确认三数组长度一致。
+5. 若某个季度表格缺星期信息（2023 年那批季度就是如此），走 `build/` 的三段流程重建，别手工猜：
+   ```bash
+   python build/fetch-seasons.py                 # 导出 Sheet 各季度 CSV
+   python build/parse-yuc.py 202404              # 解析 yuc.wiki 排期表
+   python build/parse-bahamo2.py 202404 tmp/bahamo/202404.html   # 解析巴哈姆特节目表
+   python build/gen-history.py                   # 归组并生成全部季度
+   ```
+   仍无法确定的条目会在 `manual-weekday.py` 里人工补，注释中注明依据来源。
 
 ## 与原版的差异
 
-- 数据源 URL 由阿里云 OSS 改为本仓库的 jsDelivr 地址（`cdn.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/...`），并在下拉框内置 Fastly / Gcore / CF 三个镜像热备与 EdgeOne Pages 第二源。
+- 数据源 URL 由阿里云 OSS 改为本仓库的 jsDelivr 地址（`cdn.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/...`），并在内置 Fastly / Gcore / CF 三个镜像热备与 EdgeOne Pages 第二源（自动切源，不出现在下拉框）。
 - 移除 Greasy Fork 专用 `@downloadURL` / `@updateURL`，更新跟随本仓库。
 - 当季数据已更新至 2026年10月季度（80 部），并启用日期字段做自动上下线。
+- 历史季度从 12 个补齐到 **26 个**（新增 2023年04月 ~ 2026年07月，共 898 部），下拉框不再显示镜像源。
 - 其余脚本逻辑与原版 v0.4.3（2022-11-01）完全一致。
 
 ## EdgeOne Pages 第二源（维护者操作）
