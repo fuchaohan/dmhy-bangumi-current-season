@@ -21,7 +21,7 @@
 - 用本仓库维护的当季新番数据，替换动漫花园首页的新番时间表，并为每部番剧挂上站内搜索链接。
 - 页面右上角提供：
   - **顯示切換**：全部一周时间表 / 只显示今明后三天 + 非週更番剧；
-  - **季度下拉框**：切换历史季度数据（2020年04月 ~ 2026年10月）。
+  - **季度下拉框**：切换历史季度数据（2020年04月 ~ 2026年10月），只列季度、不列镜像源。
 - 顺带修复页面居中显示问题。
 - 条目支持**生效/失效日期**：未开播的番剧到首播日自动出现，已完结的自动隐藏，无需再手动改数据。
 
@@ -45,19 +45,21 @@
 
 数据格式：`bangumi_group_name` 为周内分组（週日~週六 + 非週更）；`bangumi_data` 每项为 `[[名称, 搜索关键词, 生效开始日, 失效结束日], ...]`，关键词与日期可省略。
 
-### 多源热备
+### 多源热备（自动，用户无需手动切换）
 
-页面右上角下拉框内，当季数据提供 5 个可切换源：
+下拉框只列「当季 + 历史季度」，一个季度一项，**不暴露镜像源**。当季数据在主源加载失败时由脚本按序自动重试下列备用源，并在 console 打印实际生效的地址：
 
-| 源 | 域名 | 说明 |
+| 顺序 | 域名 | 说明 |
 | --- | --- | --- |
-| 主源 | `cdn.jsdelivr.net` | 默认，jsDelivr 主站 |
-| Fastly 镜像 | `fastly.jsdelivr.net` | 主站被污染时切换 |
-| Gcore 镜像 | `gcore.jsdelivr.net` | 延迟通常最好 |
-| CF 镜像 | `testingcf.jsdelivr.net` | Cloudflare 线路 |
-| EdgeOne 备用 | `dmhy-bangumi-current-season.edgeone.app` | 腾讯云国内节点独立第二源 |
+| 主源 | `cdn.jsdelivr.net` | jsDelivr 主站 |
+| 备 1 | `fastly.jsdelivr.net` | 主站被污染时 |
+| 备 2 | `gcore.jsdelivr.net` | 延迟通常最好 |
+| 备 3 | `testingcf.jsdelivr.net` | Cloudflare 线路 |
+| 备 4 | `dmhy-bangumi-current-season.edgeone.app` | 腾讯云国内节点独立第二源 |
 
-历史季度数据统一走主源域名。
+备用源清单在 `history-list.js` 的 `fallbacks` 字段，仅当季数据享有；历史季度为存档性质，保持单源。
+
+> 从旧版本升级时，若浏览器 `localStorage` 里存的是镜像/EdgeOne 地址，脚本会按文件名自动归位到对应季度，无需手动清理。
 
 ## 更新数据
 
@@ -86,7 +88,7 @@
 2. 构建配置：本仓库为纯静态（无 package.json），框架选「无框架/静态」，安装与构建命令留空，输出目录填 `./`。
 3. 加速区域按需选择（自定义域名需中国大陆加速时域名须已备案）。
 4. **部署完成后到项目设置里关闭「Bot 托管挑战/托管挑战」**，否则浏览器以 `<script src>` 拉数据可能被挑战页拦截。
-5. 核对项目域名：若与 `dmhy-bangumi-current-season.edgeone.app` 不一致，改 `history-list.js` 中 `default-edgeone` 那行 URL 即可。
+5. 核对项目域名：若与 `dmhy-bangumi-current-season.edgeone.app` 不一致，改 `history-list.js` 中 `fallbacks` 数组里那行 EdgeOne URL 即可（仅影响容灾顺序，不出现在下拉框）。
 
 此后每次 push，EdgeOne 自动重新部署；jsDelivr 侧约 24h 缓存，急用可到 [jsDelivr Purge](https://www.jsdelivr.com/tools/purge) 手动刷新。
 
