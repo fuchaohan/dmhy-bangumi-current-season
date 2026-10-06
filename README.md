@@ -1,7 +1,7 @@
 # 动漫花园新番索引更新脚本（自托管复刻版）
 
 > 文件名沿用原版 `dmhy-bangumi-current-season.user.js`（便于与原版对照），脚本显示名为中文。
-> 复刻自 [Masaiki/dmhy-bangumi-current-season](https://github.com/Masaiki/dmhy-bangumi-current-season)（Greasy Fork [脚本 403045](https://greasyfork.org/zh-CN/scripts/403045-dmhy-bangumi-current-season)，作者 **Masaiki / 菜姬**，数据由 MIR 维护）。
+> 复刻自 [VegeHime/dmhy-bangumi-current-season](https://github.com/VegeHime/dmhy-bangumi-current-season)（Greasy Fork [脚本 403045](https://greasyfork.org/zh-CN/scripts/403045-dmhy-bangumi-current-season)，作者 **Masaiki**（Greasy Fork 用户名「菜姬」），数据由 MIR 维护）。原版 `@author` 署名为 Masaiki，其 GitHub 账号以 `@namespace` 为准。
 > 本仓库为独立自托管副本：脚本与全部季度数据存于本仓库，通过 jsDelivr CDN 分发，不依赖原仓库的阿里云 OSS 镜像。
 
 ## 安装
