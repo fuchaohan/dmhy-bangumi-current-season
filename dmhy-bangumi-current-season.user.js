@@ -105,15 +105,14 @@
     }
     document.querySelector("div[id$='_ad']").removeAttribute('align');
     const REPO = 'fuchaohan/dmhy-bangumi-current-season@master';
-    // 数据源 CDN：主源 + 三个 jsDelivr 镜像 + EdgeOne 备用，按序自动容灾。
+    // 数据源 CDN：主源 + 三个 jsDelivr 镜像，按序自动容灾。
     const DATA_CDNS = [
         'https://cdn.jsdelivr.net/gh/',
         'https://fastly.jsdelivr.net/gh/',
         'https://gcore.jsdelivr.net/gh/',
         'https://testingcf.jsdelivr.net/gh/',
     ];
-    const EDGEONE_CDN = 'https://dmhy-bangumi-current-season.edgeone.app/';
-    // 旧版本可能把镜像/EdgeOne URL 存进了 localStorage，按文件名取回季度标识。
+    // 旧版本可能把镜像地址存进了 localStorage，按文件名取回季度标识。
     const storedFile = () => (localStorage.DataURL || '').split('/').pop();
 
     let switchButton = createElementWithAttr('a', {
@@ -137,7 +136,7 @@
 
     // history-list.js 先加载：它决定可选季度，也提供 fallbacks 备用源清单。
     loadJSWithFallback(
-        DATA_CDNS.map(c => c + REPO + '/history-list.js').concat(EDGEONE_CDN + 'history-list.js'),
+        DATA_CDNS.map(c => c + REPO + '/history-list.js'),
         () => typeof history_list !== 'undefined' && Array.isArray(history_list.urls),
         function () {
             for (let i = 0; i < history_list.values.length; i++) {

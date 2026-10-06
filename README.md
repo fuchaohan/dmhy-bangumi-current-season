@@ -81,11 +81,10 @@
 | 备 1 | `fastly.jsdelivr.net` | 主站被污染时 |
 | 备 2 | `gcore.jsdelivr.net` | 延迟通常最好 |
 | 备 3 | `testingcf.jsdelivr.net` | Cloudflare 线路 |
-| 备 4 | `dmhy-bangumi-current-season.edgeone.app` | 腾讯云国内节点独立第二源 |
 
 备用源清单在 `history-list.js` 的 `fallbacks` 字段，仅当季数据享有；历史季度为存档性质，保持单源。
 
-> 从旧版本升级时，若浏览器 `localStorage` 里存的是镜像/EdgeOne 地址，脚本会按文件名自动归位到对应季度，无需手动清理。
+> 从旧版本升级时，若浏览器 `localStorage` 里存的是镜像地址，脚本会按文件名自动归位到对应季度，无需手动清理。
 
 ## 更新数据
 
@@ -109,23 +108,11 @@
 
 ## 与原版的差异
 
-- 数据源 URL 由阿里云 OSS 改为本仓库的 jsDelivr 地址（`cdn.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/...`），并在内置 Fastly / Gcore / CF 三个镜像热备与 EdgeOne Pages 第二源（自动切源，不出现在下拉框）。
+- 数据源 URL 由阿里云 OSS 改为本仓库的 jsDelivr 地址（`cdn.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/...`），并内置 Fastly / Gcore / CF 三个镜像热备（自动切源，不出现在下拉框）。
 - 移除 Greasy Fork 专用 `@downloadURL` / `@updateURL`，更新跟随本仓库。
 - 当季数据已更新至 2026年10月季度（80 部），并启用日期字段做自动上下线。
 - 历史季度从 12 个补齐到 **26 个**（新增 2023年04月 ~ 2026年07月，共 898 部），下拉框不再显示镜像源。
 - 其余脚本逻辑与原版 v0.4.3（2022-11-01）完全一致。
-
-## EdgeOne Pages 第二源（维护者操作）
-
-本仓库同时部署到腾讯云 EdgeOne Pages 作为国内第二数据源，接入步骤（与控制台流程一致）：
-
-1. 登录 [EdgeOne Pages 控制台](https://console.cloud.tencent.com/edgeone/pages)，「创建项目」→ 连接 GitHub → 选择本仓库。
-2. 构建配置：本仓库为纯静态（无 package.json），框架选「无框架/静态」，安装与构建命令留空，输出目录填 `./`。
-3. 加速区域按需选择（自定义域名需中国大陆加速时域名须已备案）。
-4. **部署完成后到项目设置里关闭「Bot 托管挑战/托管挑战」**，否则浏览器以 `<script src>` 拉数据可能被挑战页拦截。
-5. 核对项目域名：若与 `dmhy-bangumi-current-season.edgeone.app` 不一致，改 `history-list.js` 中 `fallbacks` 数组里那行 EdgeOne URL 即可（仅影响容灾顺序，不出现在下拉框）。
-
-此后每次 push，EdgeOne 自动重新部署；jsDelivr 侧约 24h 缓存，急用可到 [jsDelivr Purge](https://www.jsdelivr.com/tools/purge) 手动刷新。
 
 ## 致谢与许可
 

@@ -1,7 +1,6 @@
 // 数据源下拉索引（values/names/urls 按下标一一对应）。
-// 下拉框只列「当季 + 历史季度」，一个季度一项；镜像/备用源不在 UI 暴露，
+// 下拉框只列「当季 + 历史季度」，一个季度一项；镜像源不在 UI 暴露，
 // 而是收在 fallbacks 里，由脚本在主源加载失败时按序自动重试。
-// 注意：EdgeOne 项目域名以控制台实际分配为准，若不同只需改 fallbacks 里那行 URL。
 let history_list = {
     'values': ['default', '202607', '202604', '202601', '202510', '202507', '202504', '202501', '202410', '202407', '202404', '202401', '202310', '202307', '202304', '202301', '202210', '202207', '202204', '202201', '202110', '202107', '202104', '202101', '202010', '202007', '202004'],
     'names': ['2026年10月(当季)', '2026年07月', '2026年04月', '2026年01月', '2025年10月', '2025年07月', '2025年04月', '2025年01月', '2024年10月', '2024年07月', '2024年04月', '2024年01月', '2023年10月', '2023年07月', '2023年04月', '2023年01月', '2022年10月', '2022年07月', '2022年04月', '2022年01月', '2021年10月', '2021年07月', '2021年04月', '2021年01月', '2020年10月', '2020年07月', '2020年04月'],
@@ -39,7 +38,6 @@ let history_list = {
     'fallbacks': [
         'https://fastly.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/bangumi-data.js',
         'https://gcore.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/bangumi-data.js',
-        'https://testingcf.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/bangumi-data.js',
-        'https://dmhy-bangumi-current-season.edgeone.app/bangumi-data.js'
+        'https://testingcf.jsdelivr.net/gh/fuchaohan/dmhy-bangumi-current-season@master/bangumi-data.js'
     ]
 };
